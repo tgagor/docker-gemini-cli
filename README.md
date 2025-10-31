@@ -12,9 +12,8 @@ I wanted to have a convenient way to run Gemini CLI without the need to trash my
 ## Supported tags and respective Dockerfile links
 
 * [latest](https://github.com/tgagor/docker-gemini-cli/blob/master/Dockerfile) - latest and greatest (default),
-* [build-0.4.7](https://github.com/tgagor/docker-gemini-cli/blob/master/Dockerfile) - represents lates build version, which might contain updates to OS, but not necessarily the Gemini CLI version,
+* [build-0.4.8](https://github.com/tgagor/docker-gemini-cli/blob/master/Dockerfile) - represents lates build version, which might contain updates to OS, but not necessarily the Gemini CLI version,
 * [v0.11.2, v0, v11](https://github.com/tgagor/docker-gemini-cli/blob/master/Dockerfile) - refers to Gemini CLI version, for convenience.
-*
 
 Version numbers use [SemVer](https://semver.org) and they reflect changes done in this repo - they are NOT related to Gemini CLI versioning. For example, each weekly build will rise version number on last place, meaning patch level update.
 
