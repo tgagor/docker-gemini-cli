@@ -57,7 +57,7 @@ jobs:
         run: |
           echo ${{ secrets.HUB_ACCESS }} | docker login -u $GITHUB_ACTOR --password-stdin
 
-          td --config build-hub.yaml \
+          td --config build.yaml \
             --build \
             --push \
             --tag ${{ steps.tag_version.outputs.new_tag }} \
