@@ -25,7 +25,7 @@ images:
     args:
       GEMINI_CLI_VERSION: "{{ env \"GEMINI_CLI_VERSION\" | default \"latest\" }}"
     tags:
-      - gemini-cli:build-{{ .tag }}
+      - gemini-cli:build-v{{ .tag }}
       - gemini-cli:v{{ env "GEMINI_CLI_VERSION" }}
       - gemini-cli:v{{ env "GEMINI_CLI_VERSION" | splitList "." | first }}
       - gemini-cli:v{{ env "GEMINI_CLI_VERSION" | splitList "." | first }}.{{ env "GEMINI_CLI_VERSION" | splitList "." | rest | first }}
