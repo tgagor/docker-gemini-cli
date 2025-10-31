@@ -3,8 +3,8 @@ Weekly updated Gemini CLI Docker image
 
 [![build](https://github.com/tgagor/docker-gemini-cli/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/tgagor/docker-gemini-cli/actions/workflows/build.yml)
 ![GitHub](https://img.shields.io/github/license/tgagor/docker-gemini-cli)
-![Docker Stars](https://img.shields.io/docker/stars/tgagor/docker-gemini-cli)
-![Docker Pulls](https://img.shields.io/docker/pulls/tgagor/docker-gemini-cli)
+![Docker Stars](https://img.shields.io/docker/stars/tgagor/gemini-cli)
+![Docker Pulls](https://img.shields.io/docker/pulls/tgagor/gemini-cli)
 ![GitHub Release Date](https://img.shields.io/github/release-date/tgagor/docker-gemini-cli)
 
 I wanted to have a convenient way to run Gemini CLI without the need to trash my OS with Node and it's dependencies. Easiest way was to wrap it as a Docker image.
@@ -12,7 +12,7 @@ I wanted to have a convenient way to run Gemini CLI without the need to trash my
 ## Supported tags and respective Dockerfile links
 
 * [latest](https://github.com/tgagor/docker-gemini-cli/blob/master/Dockerfile) - latest and greatest (default),
-* [build-0.4.5](https://github.com/tgagor/docker-gemini-cli/blob/master/Dockerfile) - represents lates build version, which might contain updates to OS, but not necessarily the Gemini CLI version,
+* [build-0.4.6](https://github.com/tgagor/docker-gemini-cli/blob/master/Dockerfile) - represents lates build version, which might contain updates to OS, but not necessarily the Gemini CLI version,
 * [v0.11.2, v0, v11](https://github.com/tgagor/docker-gemini-cli/blob/master/Dockerfile) - refers to Gemini CLI version, for convenience.
 *
 
