@@ -1,0 +1,22 @@
+---
+
+prefix: tgagor
+maintainer: Tomasz Gągor <https://gagor.pro>
+
+labels:
+  org.opencontainers.image.licenses: GPL-2.0-only
+  org.opencontainers.image.url: https://hub.docker.com/repository/docker/tgagor/gemini-cli/general
+  org.opencontainers.image.documentation: https://github.com/tgagor/docker-gemini-cli/blob/master/README.md
+  org.opencontainers.image.title: Weekly updated Google Gemini CLI Docker image
+  org.opencontainers.image.description: |
+    Those images are just standard Gemini CLI base images, but:
+
+    1. Updated weekly for security.
+    2. Optimized for smaller size.
+
+images:
+  gemini-cli:
+    dockerfile: Dockerfile
+    tags:
+      - gemini-cli:{{ .tag }}
+      - gemini-cli:latest

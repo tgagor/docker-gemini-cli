@@ -1,0 +1,162 @@
+name: build
+
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+    branches:
+      - master
+      - 'feature/*'
+      - 'bugfix/*'
+    tags:
+      - '*.*.*'
+  pull_request:
+    branches:
+      - master
+  schedule:
+    # weekly: at 04:13 on Monday
+    - cron: '13 4 * * 1'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Template Dockerfiles
+        uses: tgagor/template-dockerfiles@v0.14.0
+
+      - name: Build
+        if: github.event_name == 'pull_request'
+        run: |
+          td --config build.yaml \
+            --build \
+            --tag ${{ github.sha }} \
+            --delete
+
+      - name: Bump version and push tag
+        if: github.ref == 'refs/heads/master'
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract version from tag on master
+        if: github.ref == 'refs/heads/master'
+        env:
+          VERSION_TAG: ${{ steps.tag_version.outputs.new_tag }}
+        run: echo "DOCKER_TAG=${VERSION_TAG#v}" >> $GITHUB_ENV
+
+      - name: Use branch name as version not on master
+        if: github.ref != 'refs/heads/master'
+        run: echo "DOCKER_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+      - name: Push
+        if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+        run: |
+          echo ${{ secrets.HUB_ACCESS }} | docker login -u $GITHUB_ACTOR --password-stdin
+
+          td --config build-hub.yaml \
+            --build \
+            --push \
+            --tag ${{ steps.tag_version.outputs.new_tag }} \
+            --delete
+
+      - name: Update README
+        if: github.ref == 'refs/heads/master' && !contains(github.event.commits[0].message, 'auto-update README')
+        run: |
+          curl -fsSLo /usr/local/bin/tpl https://github.com/tgagor/tpl/releases/latest/download/tpl-linux-amd64
+          chmod +x /usr/local/bin/tpl
+
+          export DOCKER_TAG=${DOCKER_TAG}
+
+          tpl -t README-TEMPLATE.md | tee README.md
+
+          if [[ "$(git status --porcelain)" != "" ]]; then
+            git config user.name "GitHub Action"
+            git config user.email "action@github.com"
+            git add .
+            git commit -m "docs(readme): auto-update README.md"
+            git push
+          fi
+
+      - name: Create normal GitHub release
+        if: github.ref == 'refs/heads/master' && github.event_name != 'schedule'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          release_name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+
+      - name: Get current date
+        if: github.event_name == 'schedule'
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+      - name: Create a weekly GitHub release
+        if: github.event_name == 'schedule'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          release_name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: |
+            Weekly rebuild on ${{ steps.date.outputs.date }}
+
+
+  security-scan:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    if: github.ref == 'refs/heads/master' || github.event_name == 'schedule'
+    strategy:
+      matrix:
+        tag:
+          - ${{ steps.tag_version.outputs.new_tag }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Fetch image
+        run: |
+          echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+
+          set -x
+          docker pull tgagor/gemini-cli:${{ matrix.tag }}
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: tgagor/gemini-cli:${{ matrix.tag }}
+          format: template
+          template: '@/contrib/sarif.tpl'
+          # don't fail
+          exit-code: 0
+          output: trivy-results.sarif
+          severity: CRITICAL,HIGH,MEDIUM
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        if: github.ref == 'refs/heads/master'
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results.sarif
+
+  dependabot:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    permissions:
+      pull-requests: write
+      contents: write
+    if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request'}}
+    steps:
+      - id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      - env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr review --approve "$PR_URL"
+          gh pr merge --squash --auto "$PR_URL"
