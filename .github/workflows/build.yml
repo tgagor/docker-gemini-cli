@@ -24,16 +24,25 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v4
+        with:
+          daemon-config: |
+            {
+              "features": {
+                "containerd-snapshotter": true
+              }
+            }
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker-container
+          platforms: linux/arm/v7,linux/amd64,linux/arm64,linux/ppc64le,linux/riscv64,linux/s390x
+
       - name: Setup Template Dockerfiles
         uses: tgagor/template-dockerfiles@v0.15.0
-
-      - name: Build
-        if: github.event_name == 'pull_request'
-        run: |
-          td --config build.yaml \
-            --build \
-            --tag ${{ github.sha }} \
-            --delete
 
       - name: Bump version and push tag
         if: github.ref == 'refs/heads/main'
@@ -52,16 +61,24 @@ jobs:
         if: github.ref != 'refs/heads/main'
         run: echo "DOCKER_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
-      - name: Push
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+      - name: Just build on branches
+        if: github.ref != 'refs/heads/main'
+        run: |
+          td \
+            --config build.yaml \
+            --build \
+            --engine buildx \
+            --tag ${DOCKER_TAG}
+
+      - name: Build and Push on main branch
+        if: github.ref == 'refs/heads/main'
         run: |
           echo ${{ secrets.HUB_ACCESS }} | docker login -u $GITHUB_ACTOR --password-stdin
-
-          td --config build.yaml \
-            --build \
-            --push \
-            --tag ${{ steps.tag_version.outputs.new_tag }} \
-            --delete
+          td  --config build.yaml \
+              --build \
+              --engine buildx \
+              --push \
+              --tag ${DOCKER_TAG}
 
       - name: Update README
         if: github.ref == 'refs/heads/main' && !contains(github.event.commits[0].message, 'auto-update README')
@@ -119,12 +136,12 @@ jobs:
           echo ${{ secrets.HUB_ACCESS }} | docker login -u $GITHUB_ACTOR --password-stdin
 
           set -x
-          docker pull tgagor/gemini-cli:${{ steps.tag_version.outputs.new_tag }}
+          docker pull tgagor/gemini-cli:${DOCKER_TAG}
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.33.1
         with:
-          image-ref: tgagor/gemini-cli:${{ steps.tag_version.outputs.new_tag }}
+          image-ref: docker.io/tgagor/gemini-cli:${DOCKER_TAG}
           format: template
           template: '@/contrib/sarif.tpl'
           # don't fail
