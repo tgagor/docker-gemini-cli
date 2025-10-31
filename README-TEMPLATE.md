@@ -18,7 +18,7 @@ I wanted to have a convenient way to run Gemini CLI without the need to trash my
 Version numbers use [SemVer](https://semver.org) and they reflect changes done in this repo - they are NOT related to Gemini CLI versioning. For example, each weekly build will rise version number on last place, meaning patch level update.
 
 ## Image sizes
-![Docker Image Size (tag)](https://img.shields.io/docker/image-size/tgagor/docker-gemini-cli/latest?label=gemini-cli%3Alatest%20size)
+![Docker Image Size (tag)](https://img.shields.io/docker/image-size/tgagor/gemini-cli/latest?label=gemini-cli%3Alatest%20size)
 
 ## Security
 My mages are automatically scanned for security issues, actual results are available here: https://github.com/tgagor/docker-gemini-cli/security/advisories
