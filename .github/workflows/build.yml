@@ -111,10 +111,6 @@ jobs:
     needs:
       - build
     if: github.ref == 'refs/heads/master' || github.event_name == 'schedule'
-    strategy:
-      matrix:
-        tag:
-          - ${{ steps.tag_version.outputs.new_tag }}
     steps:
       - uses: actions/checkout@v5
       - name: Fetch image
@@ -122,12 +118,12 @@ jobs:
           echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
 
           set -x
-          docker pull tgagor/gemini-cli:${{ matrix.tag }}
+          docker pull tgagor/gemini-cli:${{ steps.tag_version.outputs.new_tag }}
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: tgagor/gemini-cli:${{ matrix.tag }}
+          image-ref: tgagor/gemini-cli:${{ steps.tag_version.outputs.new_tag }}
           format: template
           template: '@/contrib/sarif.tpl'
           # don't fail
