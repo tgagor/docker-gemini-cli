@@ -155,6 +155,8 @@ jobs:
         run: |
           echo ${{ secrets.HUB_ACCESS }} | docker login -u $GITHUB_ACTOR --password-stdin
 
+          docker pull tgagor/gemini-cli:build-${{needs.build.outputs.tag_version}}
+
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.33.1
         with:
