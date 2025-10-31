@@ -80,6 +80,7 @@ jobs:
           td \
             --config build.yaml \
             --build \
+            --parallel 1 \
             --engine buildx \
             --tag ${DOCKER_TAG}
 
