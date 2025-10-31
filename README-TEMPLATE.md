@@ -95,8 +95,13 @@ The following tags are available on [Docker Hub](https://hub.docker.com/r/tgagor
 
 Images are automatically scanned for vulnerabilities. You can view the latest security report [here](https://github.com/tgagor/docker-gemini-cli/security/advisories).
 
-## Image size
-![Docker Image Size (tag)](https://img.shields.io/docker/image-size/tgagor/gemini-cli/latest?label=tgagor/gemini-cli%3Alatest%20size)
+## Image sizes
+![Docker Image Size](https://img.shields.io/docker/image-size/tgagor/gemini-cli?arch=amd64&label=tgagor%2Fgemini-cli%20(amd64))
+![Docker Image Size](https://img.shields.io/docker/image-size/tgagor/gemini-cli?arch=arm64&label=tgagor%2Fgemini-cli%20(arm64))
+![Docker Image Size](https://img.shields.io/docker/image-size/tgagor/gemini-cli?arch=arm&label=tgagor%2Fgemini-cli%20(arm))
+
+
+
 
 ## Images
 You can fetch docker image from:
