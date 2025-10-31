@@ -24,8 +24,9 @@ RUN apk add --no-cache su-exec && \
     chmod +x /usr/local/sbin/docker-entrypoint.sh
 
 # Install Gemini CLI
+ARG GEMINI_CLI_VERSION="latest"
 RUN apk add --no-cache nodejs npm && \
-    npm install -g @google/gemini-cli && \
+    npm install -g @google/gemini-cli@${GEMINI_CLI_VERSION} && \
     rm -rf ~/.npm && \
     apk del --no-cache npm && \
     gemini --version

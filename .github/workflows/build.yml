@@ -44,6 +44,10 @@ jobs:
       - name: Setup Template Dockerfiles
         uses: tgagor/template-dockerfiles@v0.15.0
 
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
       - name: Bump version and push tag
         if: github.ref == 'refs/heads/main'
         id: tag_version
@@ -60,6 +64,12 @@ jobs:
       - name: Use branch name as version not on main
         if: github.ref != 'refs/heads/main'
         run: echo "DOCKER_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+      - name: Discover Gemini CLI latest version
+        id: gemini_version
+        run: |
+          GEMINI_CLI_VERSION=$(npm view @google/gemini-cli version)
+          echo "GEMINI_CLI_VERSION=${GEMINI_CLI_VERSION}" >> $GITHUB_ENV
 
       - name: Just build on branches
         if: github.ref != 'refs/heads/main'

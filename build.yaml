@@ -22,8 +22,11 @@ platforms:
 images:
   gemini-cli:
     dockerfile: Dockerfile
+    args:
+      GEMINI_CLI_VERSION: "{{ env GEMINI_CLI_VERSION | default \"latest\" }}"
     tags:
-      - gemini-cli:{{ .tag }}
-      - gemini-cli:{{ .tag | splitList "." | first }}
-      - gemini-cli:{{ .tag | splitList "." | first }}.{{ .tag | splitList "." | index 1 }}
+      - gemini-cli:build-{{ .tag }}
+      - gemini-cli:build-{{ env GEMINI_CLI_VERSION }}
+      - gemini-cli:{{ env GEMINI_CLI_VERSION | splitList "." | first }}
+      # - gemini-cli:{{ env GEMINI_CLI_VERSION | splitList "." | first }}.{{ .tag | splitList "." | index 1 }}
       - gemini-cli:latest
