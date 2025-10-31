@@ -27,4 +27,6 @@ images:
     dockerfile: Dockerfile
     tags:
       - gemini-cli:{{ .tag }}
+      - gemini-cli:{{ .tag | splitList "." | first }}
+      - gemini-cli:{{ .tag | splitList "." | first }}.{{ .tag | splitList "." | index 1 }}
       - gemini-cli:latest
