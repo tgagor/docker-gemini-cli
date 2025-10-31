@@ -8,8 +8,6 @@ on:
       - master
       - 'feature/*'
       - 'bugfix/*'
-    tags:
-      - '*.*.*'
   pull_request:
     branches:
       - master
