@@ -106,6 +106,7 @@ jobs:
           chmod +x /usr/local/bin/tpl
 
           export DOCKER_TAG=${DOCKER_TAG}
+          export GEMINI_CLI_VERSION=${GEMINI_CLI_VERSION}
 
           tpl -t README-TEMPLATE.md | tee README.md
 
