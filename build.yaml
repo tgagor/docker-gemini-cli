@@ -14,10 +14,10 @@ labels:
     1. Updated weekly for security.
     2. Optimized for smaller size.
 
-platforms:
-  - linux/arm/v7
-  - linux/amd64
-  - linux/arm64
+# platforms:
+#   - linux/arm/v7
+#   - linux/amd64
+#   - linux/arm64
 
 images:
   gemini-cli:
