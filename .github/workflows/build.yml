@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Setup Template Dockerfiles
-        uses: tgagor/template-dockerfiles@v0.14.0
+        uses: tgagor/template-dockerfiles@v0.15.0
 
       - name: Build
         if: github.event_name == 'pull_request'
