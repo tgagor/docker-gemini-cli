@@ -13,7 +13,7 @@ I wanted to have a convenient way to run Gemini CLI without the need to trash my
 
 * [latest](https://github.com/tgagor/docker-gemini-cli/blob/master/Dockerfile) - latest and greatest (default),
 * [build-{{ .DOCKER_TAG }}](https://github.com/tgagor/docker-gemini-cli/blob/master/Dockerfile) - represents lates build version, which might contain updates to OS, but not necessarily the Gemini CLI version,
-* [v{{ .GEMINI_CLI_VERSION }}, v{{ .GEMINI_CLI_VERSION | splitList "." | first }}, v{{ .GEMINI_CLI_VERSION | splitList "." | rest | first }}](https://github.com/tgagor/docker-gemini-cli/blob/master/Dockerfile) - refers to Gemini CLI version, for convenience.
+* [v{{ .GEMINI_CLI_VERSION | splitList "." | first }}, v{{ .GEMINI_CLI_VERSION | splitList "." | rest | first }}, v{{ .GEMINI_CLI_VERSION }}](https://github.com/tgagor/docker-gemini-cli/blob/master/Dockerfile) - refers to Gemini CLI version, for convenience.
 
 Version numbers use [SemVer](https://semver.org) and they reflect changes done in this repo - they are NOT related to Gemini CLI versioning. For example, each weekly build will rise version number on last place, meaning patch level update.
 
