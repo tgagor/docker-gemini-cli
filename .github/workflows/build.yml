@@ -158,7 +158,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.33.1
         with:
-          image-ref: docker.io/tgagor/gemini-cli:build-${{needs.build.outputs.tag_version}}
+          image-ref: tgagor/gemini-cli:build-${{needs.build.outputs.tag_version}}
           format: template
           template: '@/contrib/sarif.tpl'
           # don't fail
