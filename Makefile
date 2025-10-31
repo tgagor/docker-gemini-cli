@@ -8,6 +8,8 @@ GIT_TAG ?= $(shell echo $(GIT_BRANCH) | sed -E 's/[/:]/-/g' | sed 's/main/latest
 DOCKER_CMD ?= docker
 MAINTAINER ?= $(shell cat build.yaml| yq -r '.maintainer')
 IMAGES := $(shell cat build.yaml| yq -r '.images|keys[]')
+GEMINI_CLI_VERSION ?= 0.11.2
+export GEMINI_CLI_VERSION
 
 # use numer of available CPUs to run multiple builds at the same time
 PARALLEL := $(shell $(DOCKER_CMD) info --format "{{ .NCPU }}")
