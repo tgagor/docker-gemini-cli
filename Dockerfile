@@ -5,19 +5,6 @@ ENV DEBUG=false
 
 VOLUME /tmp /var/cache/apk /var/tmp /root/.cache /root/.npm
 
-# FIXME: I'm not sure if it's needed at all
-# configure locale
-# ENV LANG="en_US.UTF-8"
-# ENV LANGUAGE="en_US:en"
-# ENV LC_ALL="en_US.UTF-8"
-# configure timezone
-# ARG TIMEZONE="UTC"
-# RUN apk add --no-cache tzdata && \
-#     cp /usr/share/zoneinfo/$TIMEZONE /etc/localtime && \
-#     echo "$TIMEZONE" > /etc/timezone && \
-#     apk del tzdata && \
-#     date
-
 # Setup unprivileged user defaults
 COPY usr/ /usr/
 RUN apk add --no-cache su-exec && \
