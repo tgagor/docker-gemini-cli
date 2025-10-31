@@ -48,12 +48,13 @@ jobs:
         with:
           node-version: 24
 
-      - name: Bump version and push tag
+      - name: Guess next version
         if: github.ref == 'refs/heads/main'
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          dry_run: true
 
       - name: Extract version from tag on main
         if: github.ref == 'refs/heads/main'
@@ -89,6 +90,13 @@ jobs:
               --engine buildx \
               --push \
               --tag ${DOCKER_TAG}
+
+      - name: Bump version and push tag
+        if: github.ref == 'refs/heads/main'
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update README
         if: github.ref == 'refs/heads/main' && !contains(github.event.commits[0].message, 'auto-update README')
