@@ -87,8 +87,8 @@ gemini
 The following tags are available on [Docker Hub](https://hub.docker.com/r/tgagor/docker-gemini-cli):
 
 *   [`latest`](https://hub.docker.com/repository/docker/tgagor/gemini-cli/tags): The most recent, stable version of the Gemini CLI.
-*   [`v0.11.3`](https://hub.docker.com/repository/docker/tgagor/gemini-cli/tags) (e.g., `v0.11.0`): Corresponds to a specific version of the Gemini CLI.
-*   [`v0.11`](https://hub.docker.com/repository/docker/tgagor/gemini-cli/tags) (e.g., `v0.11`): Points to the latest patch release for a minor version.
+*   [`v0.13.0`](https://hub.docker.com/repository/docker/tgagor/gemini-cli/tags) (e.g., `v0.11.0`): Corresponds to a specific version of the Gemini CLI.
+*   [`v0.13`](https://hub.docker.com/repository/docker/tgagor/gemini-cli/tags) (e.g., `v0.11`): Points to the latest patch release for a minor version.
 *   [`v0`](https://hub.docker.com/repository/docker/tgagor/gemini-cli/tags) (e.g., `v0`): Points to the latest minor release for a major version.
 
 ## Security
