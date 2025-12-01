@@ -21,11 +21,4 @@ getent group $GID 2>&1 > /dev/null || addgroup -g $GID $USER
 # create user if it doesn't exist
 getent passwd $UID 2>&1 > /dev/null || adduser -D -h "$HOME" -u $UID -G $USER $USER
 
-# prepare home dir as it won't be created for users that already exist
-if [[ ! -d "$HOME" ]]; then
-    mkdir -p "$HOME/workspace"
-fi
-
-chown -R "${UID}:${GID}" "${HOME}"
-
 exec su-exec "${UID}:${GID}" "$@"
