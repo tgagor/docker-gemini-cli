@@ -84,12 +84,12 @@ gemini
 
 ## Supported Tags
 
-The following tags are available on [Docker Hub](https://hub.docker.com/r/tgagor/docker-gemini-cli):
+The following tags are available on [Docker Hub](https://hub.docker.com/r/tgagor/gemini-cli):
 
-*   [`latest`](https://hub.docker.com/repository/docker/tgagor/gemini-cli/tags): The most recent, stable version of the Gemini CLI.
-*   [`v{{ .GEMINI_CLI_VERSION }}`](https://hub.docker.com/repository/docker/tgagor/gemini-cli/tags) (e.g., `v0.11.0`): Corresponds to a specific version of the Gemini CLI.
-*   [`v{{ .GEMINI_CLI_VERSION | splitList "." | first }}.{{ .GEMINI_CLI_VERSION | splitList "." | rest | first }}`](https://hub.docker.com/repository/docker/tgagor/gemini-cli/tags) (e.g., `v0.11`): Points to the latest patch release for a minor version.
-*   [`v{{ .GEMINI_CLI_VERSION | splitList "." | first }}`](https://hub.docker.com/repository/docker/tgagor/gemini-cli/tags) (e.g., `v0`): Points to the latest minor release for a major version.
+*   [`latest`](https://hub.docker.com/r/tgagor/gemini-cli/tags): The most recent, stable version of the Gemini CLI.
+*   [`v{{ .GEMINI_CLI_VERSION }}`](https://hub.docker.com/r/tgagor/gemini-cli/tags) (e.g., `v0.11.0`): Corresponds to a specific version of the Gemini CLI.
+*   [`v{{ .GEMINI_CLI_VERSION | splitList "." | first }}.{{ .GEMINI_CLI_VERSION | splitList "." | rest | first }}`](https://hub.docker.com/r/tgagor/gemini-cli/tags) (e.g., `v0.11`): Points to the latest patch release for a minor version.
+*   [`v{{ .GEMINI_CLI_VERSION | splitList "." | first }}`](https://hub.docker.com/r/tgagor/gemini-cli/tags) (e.g., `v0`): Points to the latest minor release for a major version.
 
 ## Security
 
