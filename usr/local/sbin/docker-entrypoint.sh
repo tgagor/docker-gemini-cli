@@ -19,6 +19,9 @@ fi
 getent group $GID 2>&1 > /dev/null || addgroup -g $GID $USER
 
 # create user if it doesn't exist
-getent passwd $UID 2>&1 > /dev/null || adduser -D -h "$HOME" -u $UID -G $USER $USER
+getent passwd $UID 2>&1 > /dev/null || {
+    GROUP_NAME=$(getent group "$GID" | cut -d: -f1) || GROUP_NAME="$USER"
+    adduser -D -h "$HOME" -u $UID -G "$GROUP_NAME" $USER
+}
 
 exec su-exec "${UID}:${GID}" "$@"
