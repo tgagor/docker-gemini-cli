@@ -14,7 +14,6 @@ RUN apk add --no-cache su-exec && \
 ARG GEMINI_CLI_VERSION="latest"
 ARG TARGETPLATFORM
 RUN apk add --no-cache nodejs npm && \
-
     if [ "$TARGETPLATFORM" != "linux/amd64" ]; then \
         apk add --no-cache python3 py3-pip build-base git; \
     fi && \
