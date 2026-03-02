@@ -22,6 +22,7 @@ RUN apk add --no-cache \
     fi && \
     npm install -g @google/gemini-cli@${GEMINI_CLI_VERSION} && \
     rm -rf ~/.npm && \
+    apk del --no-cache npm && \
     if [ "$TARGETPLATFORM" != "linux/amd64" ]; then \
         apk del --no-cache python3 py3-pip build-base git; \
     fi && \
