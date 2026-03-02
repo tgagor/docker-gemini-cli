@@ -1,5 +1,4 @@
 ---
-
 prefix: tgagor
 maintainer: Tomasz Gągor <https://gagor.pro>
 
@@ -15,15 +14,15 @@ labels:
     2. Optimized for smaller size.
 
 platforms:
-  - linux/arm/v7
+  # - linux/arm/v7
   - linux/amd64
-  - linux/arm64
+  # - linux/arm64
 
 images:
   gemini-cli:
     dockerfile: Dockerfile
     args:
-      GEMINI_CLI_VERSION: "{{ env \"GEMINI_CLI_VERSION\" | default \"latest\" }}"
+      GEMINI_CLI_VERSION: '{{ env "GEMINI_CLI_VERSION" | default "latest" }}'
     tags:
       - gemini-cli:build-v{{ .tag }}
       - gemini-cli:v{{ env "GEMINI_CLI_VERSION" }}
