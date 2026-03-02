@@ -55,7 +55,7 @@ jobs:
           node-version: 24
 
       - name: Guess next version
-        if: github.ref == 'refs/heads/main'
+        # if: github.ref == 'refs/heads/main'
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.2
         with:
@@ -87,66 +87,66 @@ jobs:
       #       --engine buildx \
       #       --tag ${DOCKER_TAG}
 
-      - name: Build and Push on main branch
-        # if: github.ref == 'refs/heads/main'
-        run: |
-          echo ${{ secrets.HUB_ACCESS }} | docker login -u $GITHUB_ACTOR --password-stdin
-          td \
-            --config build.yaml \
-            --build \
-            --engine buildx \
-            --push \
-            --tag ${DOCKER_TAG}
+      # - name: Build and Push on main branch
+      #   # if: github.ref == 'refs/heads/main'
+      #   run: |
+      #     echo ${{ secrets.HUB_ACCESS }} | docker login -u $GITHUB_ACTOR --password-stdin
+      #     td \
+      #       --config build.yaml \
+      #       --build \
+      #       --engine buildx \
+      #       --push \
+      #       --tag ${DOCKER_TAG}
 
-      - name: Bump version and push tag
-        if: github.ref == 'refs/heads/main'
-        uses: mathieudutour/github-tag-action@v6.2
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Bump version and push tag
+      #   if: github.ref == 'refs/heads/main'
+      #   uses: mathieudutour/github-tag-action@v6.2
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update README
-        if: github.ref == 'refs/heads/main' && !contains(github.event.commits[0].message, 'auto-update README')
-        run: |
-          curl -fsSLo /usr/local/bin/tpl https://github.com/tgagor/tpl/releases/latest/download/tpl-linux-amd64
-          chmod +x /usr/local/bin/tpl
+      # - name: Update README
+      #   if: github.ref == 'refs/heads/main' && !contains(github.event.commits[0].message, 'auto-update README')
+      #   run: |
+      #     curl -fsSLo /usr/local/bin/tpl https://github.com/tgagor/tpl/releases/latest/download/tpl-linux-amd64
+      #     chmod +x /usr/local/bin/tpl
 
-          export DOCKER_TAG=${DOCKER_TAG}
-          export GEMINI_CLI_VERSION=${GEMINI_CLI_VERSION}
+      #     export DOCKER_TAG=${DOCKER_TAG}
+      #     export GEMINI_CLI_VERSION=${GEMINI_CLI_VERSION}
 
-          tpl -t README-TEMPLATE.md | tee README.md
+      #     tpl -t README-TEMPLATE.md | tee README.md
 
-          if [[ "$(git status --porcelain)" != "" ]]; then
-            git config user.name "GitHub Action"
-            git config user.email "action@github.com"
-            git add .
-            git commit -m "docs(readme): auto-update README.md"
-            git push
-          fi
+      #     if [[ "$(git status --porcelain)" != "" ]]; then
+      #       git config user.name "GitHub Action"
+      #       git config user.email "action@github.com"
+      #       git add .
+      #       git commit -m "docs(readme): auto-update README.md"
+      #       git push
+      #     fi
 
-      - name: Create normal GitHub release
-        if: github.ref == 'refs/heads/main' && (github.event_name != 'schedule' || github.actor == 'dependabot[bot]')
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.tag_version.outputs.new_tag }}
-          release_name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
+      # - name: Create normal GitHub release
+      #   if: github.ref == 'refs/heads/main' && (github.event_name != 'schedule' || github.actor == 'dependabot[bot]')
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ steps.tag_version.outputs.new_tag }}
+      #     release_name: Release ${{ steps.tag_version.outputs.new_tag }}
+      #     body: ${{ steps.tag_version.outputs.changelog }}
 
-      - name: Get current date
-        if: github.event_name == 'schedule' && github.actor != 'dependabot[bot]'
-        id: date
-        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
-      - name: Create a weekly GitHub release
-        if: github.event_name == 'schedule' && github.actor != 'dependabot[bot]'
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.tag_version.outputs.new_tag }}
-          release_name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: |
-            Weekly rebuild on ${{ steps.date.outputs.date }}
+      # - name: Get current date
+      #   if: github.event_name == 'schedule' && github.actor != 'dependabot[bot]'
+      #   id: date
+      #   run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+      # - name: Create a weekly GitHub release
+      #   if: github.event_name == 'schedule' && github.actor != 'dependabot[bot]'
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ steps.tag_version.outputs.new_tag }}
+      #     release_name: Release ${{ steps.tag_version.outputs.new_tag }}
+      #     body: |
+      #       Weekly rebuild on ${{ steps.date.outputs.date }}
 
   security-scan:
     permissions:
@@ -163,13 +163,13 @@ jobs:
         run: |
           echo ${{ secrets.HUB_ACCESS }} | docker login -u $GITHUB_ACTOR --password-stdin
 
-          docker pull tgagor/gemini-cli:build-${{needs.build.outputs.tag_version}}
+          docker pull tgagor/gemini-cli:build-v0.5.26
           docker image ls
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.34.2
         with:
-          image-ref: tgagor/gemini-cli:build-${{needs.build.outputs.tag_version}}
+          image-ref: tgagor/gemini-cli:build-v0.5.26
           format: template
           template: "@/contrib/sarif.tpl"
           # don't fail
