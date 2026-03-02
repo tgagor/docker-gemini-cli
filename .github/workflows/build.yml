@@ -45,7 +45,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
         with:
           driver: docker-container
-          platforms: linux/arm/v7,linux/amd64,linux/arm64,linux/ppc64le,linux/riscv64,linux/s390x
+          platforms: linux/arm/v7,linux/amd64,linux/arm64
 
       - name: Setup Template Dockerfiles
         uses: tgagor/template-dockerfiles@v0.16.2
@@ -78,25 +78,25 @@ jobs:
           GEMINI_CLI_VERSION=$(npm view @google/gemini-cli version)
           echo "GEMINI_CLI_VERSION=${GEMINI_CLI_VERSION}" >> $GITHUB_ENV
 
-      - name: Just build on branches
-        if: github.ref != 'refs/heads/main'
+      # - name: Just build on branches
+      #   if: github.ref != 'refs/heads/main'
+      #   run: |
+      #     td \
+      #       --config build.yaml \
+      #       --build \
+      #       --engine buildx \
+      #       --tag ${DOCKER_TAG}
+
+      - name: Build and Push on main branch
+        # if: github.ref == 'refs/heads/main'
         run: |
+          echo ${{ secrets.HUB_ACCESS }} | docker login -u $GITHUB_ACTOR --password-stdin
           td \
             --config build.yaml \
             --build \
-            --parallel 1 \
             --engine buildx \
+            --push \
             --tag ${DOCKER_TAG}
-
-      - name: Build and Push on main branch
-        if: github.ref == 'refs/heads/main'
-        run: |
-          echo ${{ secrets.HUB_ACCESS }} | docker login -u $GITHUB_ACTOR --password-stdin
-          td  --config build.yaml \
-              --build \
-              --engine buildx \
-              --push \
-              --tag ${DOCKER_TAG}
 
       - name: Bump version and push tag
         if: github.ref == 'refs/heads/main'
@@ -157,6 +157,8 @@ jobs:
     # if: github.ref == 'refs/heads/main' || github.event_name == 'schedule'
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - name: Fetch image
         run: |
           echo ${{ secrets.HUB_ACCESS }} | docker login -u $GITHUB_ACTOR --password-stdin
