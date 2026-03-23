@@ -15,6 +15,7 @@ ARG GEMINI_CLI_VERSION="latest"
 ARG TARGETPLATFORM
 RUN apk add --no-cache \
         coreutils \
+        bash \
         nodejs \
         npm && \
     if [ "$TARGETPLATFORM" != "linux/amd64" ]; then \

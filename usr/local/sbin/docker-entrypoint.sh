@@ -1,28 +1,28 @@
-#!/bin/sh
+#!/bin/bash
 
 set -eu
 
-UID=${DEFAULT_UID:-1000}
-GID=${DEFAULT_GID:-1000}
+USER_ID=${DEFAULT_UID:-1000}
+GROUP_ID=${DEFAULT_GID:-1000}
 USER=${DEFAULT_USERNAME:-gemini}
 HOME=${DEFAULT_HOME_DIR:-/home/$USER}
 
 if [ "$DEBUG" == "true" ]; then
     echo "Creating unprivileged user matching system user..."
     echo "  Name:     $USER"
-    echo "  UID:      $UID"
-    echo "  GID:      $GID"
+    echo "  UID:      $USER_ID"
+    echo "  GID:      $GROUP_ID"
     echo "  Home dir: $HOME"
 fi
 
 # create group if it doesn't exist
-getent group $GID 2>&1 > /dev/null || addgroup -g $GID $USER
+getent group $GROUP_ID 2>&1 > /dev/null || addgroup -g $GROUP_ID $USER
 
 # create user if it doesn't exist
 # assign to existing group at GID if available, otherwise use $USER as group name
-getent passwd $UID 2>&1 > /dev/null || {
-    GROUP_NAME=$(getent group "$GID" | cut -d: -f1) || GROUP_NAME="$USER"
-    adduser -D -h "$HOME" -u $UID -G "$GROUP_NAME" $USER
+getent passwd $USER_ID 2>&1 > /dev/null || {
+    GROUP_NAME=$(getent group "$GROUP_ID" | cut -d: -f1) || GROUP_NAME="$USER"
+    adduser -D -h "$HOME" -u $USER_ID -G "$GROUP_NAME" -s /bin/bash $USER
 }
 
-exec su-exec "${UID}:${GID}" "$@"
+exec su-exec "${USER_ID}:${GROUP_ID}" "$@"

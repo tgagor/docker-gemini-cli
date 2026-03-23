@@ -1,5 +1,4 @@
 ---
-
 prefix: tgagor
 maintainer: Tomasz Gągor <https://gagor.pro>
 
@@ -23,7 +22,7 @@ images:
   gemini-cli:
     dockerfile: Dockerfile
     args:
-      GEMINI_CLI_VERSION: "{{ env \"GEMINI_CLI_VERSION\" | default \"latest\" }}"
+      GEMINI_CLI_VERSION: '{{ env "GEMINI_CLI_VERSION" | default "latest" }}'
     tags:
       - gemini-cli:build-v{{ .tag }}
       - gemini-cli:v{{ env "GEMINI_CLI_VERSION" }}

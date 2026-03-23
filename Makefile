@@ -21,6 +21,7 @@ build:
 	td --config $(BUILD_CONFIG) \
 		--build \
 		--engine buildx \
+		--verbose \
 		--tag $(GIT_TAG)
 
 $(IMAGES):
