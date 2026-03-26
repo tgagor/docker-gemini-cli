@@ -1,4 +1,5 @@
-FROM alpine:3.23
+ARG BASE_IMAGE=alpine:3.23
+FROM ${BASE_IMAGE}
 
 # set some defaults
 ENV DEBUG=false

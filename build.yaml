@@ -14,18 +14,27 @@ labels:
     2. Optimized for smaller size.
 
 platforms:
-  - linux/arm/v7
+  # - linux/arm/v7
   - linux/amd64
   - linux/arm64
 
 images:
   gemini-cli:
     dockerfile: Dockerfile
+    variables:
+      base_image:
+        - alpine:3.23
+        - oven/bun:1.3.11-alpine
     args:
       GEMINI_CLI_VERSION: '{{ env "GEMINI_CLI_VERSION" | default "latest" }}'
+      BASE_IMAGE: '{{ .base_image }}'
     tags:
       - gemini-cli:build-v{{ .tag }}
       - gemini-cli:v{{ env "GEMINI_CLI_VERSION" }}
+      - gemini-cli:v{{ env "GEMINI_CLI_VERSION" }}-{{ if eq (splitList ":" .base_image | first) "alpine" }}alpine{{ else }}bun{{ end }}
       - gemini-cli:v{{ if contains "." (env "GEMINI_CLI_VERSION") }}{{ env "GEMINI_CLI_VERSION" | splitList "." | first }}{{ end }}
+      - gemini-cli:v{{ if contains "." (env "GEMINI_CLI_VERSION") }}{{ env "GEMINI_CLI_VERSION" | splitList "." | first }}{{ end }}-{{ if eq (splitList ":" .base_image | first) "alpine" }}alpine{{ else }}bun{{ end }}
       - gemini-cli:v{{ if contains "." (env "GEMINI_CLI_VERSION") }}{{ env "GEMINI_CLI_VERSION" | splitList "." | first }}.{{ env "GEMINI_CLI_VERSION" | splitList "." | rest | first }}{{ end }}
+      - gemini-cli:v{{ if contains "." (env "GEMINI_CLI_VERSION") }}{{ env "GEMINI_CLI_VERSION" | splitList "." | first }}.{{ env "GEMINI_CLI_VERSION" | splitList "." | rest | first }}{{ end }}-{{ if eq (splitList ":" .base_image | first) "alpine" }}alpine{{ else }}bun{{ end }}
+      - gemini-cli:{{ if eq (splitList ":" .base_image | first) "alpine" }}alpine{{ else }}bun{{ end }}
       - gemini-cli:latest
