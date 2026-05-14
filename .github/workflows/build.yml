@@ -104,12 +104,12 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install TPL
+        uses: zooplus/tpl@main
+
       - name: Update README
         if: github.ref == 'refs/heads/main' && !contains(github.event.commits[0].message, 'auto-update README')
         run: |
-          curl -fsSLo /usr/local/bin/tpl https://github.com/tgagor/tpl/releases/latest/download/tpl-linux-amd64
-          chmod +x /usr/local/bin/tpl
-
           export DOCKER_TAG=${DOCKER_TAG}
           export GEMINI_CLI_VERSION=${GEMINI_CLI_VERSION}
 
