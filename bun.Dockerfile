@@ -1,4 +1,5 @@
-FROM alpine:3.23
+ARG BASE_IMAGE=alpine:3.23
+FROM ${BASE_IMAGE}
 
 # set some defaults
 ENV DEBUG=false
@@ -14,18 +15,19 @@ RUN apk add --no-cache su-exec && \
 ARG GEMINI_CLI_VERSION="latest"
 ARG TARGETPLATFORM
 RUN apk add --no-cache \
-        coreutils \
-        bash \
-        nodejs \
-        npm && \
+    bash \
+    coreutils \
+    libsecret && \
+    # Add build dependencies for ARM platforms to compile native modules
     if [ "$TARGETPLATFORM" != "linux/amd64" ]; then \
-        apk add --no-cache python3 py3-pip build-base git; \
+    apk add --no-cache python3 py3-pip build-base git; \
     fi && \
-    npm install -g @google/gemini-cli@${GEMINI_CLI_VERSION} && \
+    # Install Gemini CLI
+    bun install -g @google/gemini-cli@${GEMINI_CLI_VERSION}; \
     rm -rf ~/.npm && \
-    apk del --no-cache npm && \
+    # Cleanup build dependencies for ARM platforms
     if [ "$TARGETPLATFORM" != "linux/amd64" ]; then \
-        apk del --no-cache python3 py3-pip build-base git; \
+    apk del --no-cache python3 py3-pip build-base git; \
     fi && \
     gemini --version
 
