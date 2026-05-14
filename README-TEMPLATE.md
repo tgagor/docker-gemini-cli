@@ -40,6 +40,7 @@ This setup:
 - Mounts `~/.gemini` to preserve Gemini CLI configuration between runs
 - Matches container user permissions with your local user to avoid file ownership issues
 - Handles TTY properly for interactive use
+- To use the Bun variant, simply use `bun` tag: `tgagor/gemini-cli:bun`
 
 #### Platform-specific Notes
 
@@ -51,6 +52,13 @@ This setup:
 - The setup works the same way
 - File permissions might behave differently due to how Docker Desktop handles mounting on macOS
 - If you experience permission issues, you may need to add `:delegated` to volume mounts for better performance
+
+#### Runtime Variants
+
+This repository provides two runtime variants:
+
+- **Node.js** (default): Available on `linux/amd64`, `linux/arm64`, and `linux/arm/v7`. Use standard tags like `latest`, `v{{ .GEMINI_CLI_VERSION }}`.
+- **Bun**: Faster alternative available on `linux/amd64` and `linux/arm64` only. Use tags with `bun` suffix (e.g., `bun`, `v{{ .GEMINI_CLI_VERSION }}-bun`).
 
 ### Basic Docker Usage
 
@@ -86,10 +94,23 @@ gemini
 
 The following tags are available on [Docker Hub](https://hub.docker.com/r/tgagor/gemini-cli):
 
-*   [`latest`](https://hub.docker.com/r/tgagor/gemini-cli/tags): The most recent, stable version of the Gemini CLI.
-*   [`v{{ .GEMINI_CLI_VERSION }}`](https://hub.docker.com/r/tgagor/gemini-cli/tags) (e.g., `v0.11.0`): Corresponds to a specific version of the Gemini CLI.
-*   [`v{{ .GEMINI_CLI_VERSION | splitList "." | first }}.{{ .GEMINI_CLI_VERSION | splitList "." | rest | first }}`](https://hub.docker.com/r/tgagor/gemini-cli/tags) (e.g., `v0.11`): Points to the latest patch release for a minor version.
-*   [`v{{ .GEMINI_CLI_VERSION | splitList "." | first }}`](https://hub.docker.com/r/tgagor/gemini-cli/tags) (e.g., `v0`): Points to the latest minor release for a major version.
+### Node.js (Default)
+
+*   [`latest`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Most recent stable version.
+*   [`alpine`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Latest with Alpine Linux base.
+*   [`v{{ .GEMINI_CLI_VERSION }}`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Specific version.
+*   [`v{{ .GEMINI_CLI_VERSION }}-alpine`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Specific version with Alpine base.
+*   [`v{{ .GEMINI_CLI_VERSION | splitList "." | first }}.{{ .GEMINI_CLI_VERSION | splitList "." | rest | first }}`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Latest patch for a minor version.
+*   [`v{{ .GEMINI_CLI_VERSION | splitList "." | first }}.{{ .GEMINI_CLI_VERSION | splitList "." | rest | first }}-alpine`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Latest patch with Alpine base.
+*   [`v{{ .GEMINI_CLI_VERSION | splitList "." | first }}`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Latest minor release for a major version.
+*   [`v{{ .GEMINI_CLI_VERSION | splitList "." | first }}-alpine`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Latest minor with Alpine base.
+
+### Bun (⚠️ amd64 and arm64 only)
+
+*   [`bun`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Latest with Bun runtime.
+*   [`v{{ .GEMINI_CLI_VERSION }}-bun`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Specific version with Bun.
+*   [`v{{ .GEMINI_CLI_VERSION | splitList "." | first }}.{{ .GEMINI_CLI_VERSION | splitList "." | rest | first }}-bun`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Latest patch for a minor version with Bun.
+*   [`v{{ .GEMINI_CLI_VERSION | splitList "." | first }}-bun`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Latest minor with Bun.
 
 ## Security
 
@@ -99,9 +120,6 @@ Images are automatically scanned for vulnerabilities. You can view the latest se
 ![Docker Image Size](https://img.shields.io/docker/image-size/tgagor/gemini-cli?arch=amd64&label=tgagor%2Fgemini-cli%20(amd64))
 ![Docker Image Size](https://img.shields.io/docker/image-size/tgagor/gemini-cli?arch=arm64&label=tgagor%2Fgemini-cli%20(arm64))
 ![Docker Image Size](https://img.shields.io/docker/image-size/tgagor/gemini-cli?arch=arm&label=tgagor%2Fgemini-cli%20(arm))
-
-
-
 
 ## Images
 You can fetch docker image from:
