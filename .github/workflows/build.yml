@@ -105,6 +105,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install TPL
+        if: github.ref == 'refs/heads/main' && !contains(github.event.commits[0].message, 'auto-update README')
         uses: zooplus/tpl@v0.13.5
 
       - name: Update README
