@@ -31,6 +31,8 @@ function gemini {
         -v "$HOME/.gemini:/home/gemini/.gemini" \
         -e DEFAULT_UID=$(id -u) \
         -e DEFAULT_GID=$(id -g) \
+        -e TERM="${TERM:-xterm-256color}" \
+        -e COLORTERM="${COLORTERM:-truecolor}" \
         tgagor/gemini-cli "$@"
 }
 ```
@@ -40,6 +42,7 @@ This setup:
 - Mounts `~/.gemini` to preserve Gemini CLI configuration between runs
 - Matches container user permissions with your local user to avoid file ownership issues
 - Handles TTY properly for interactive use
+- Thanks to [Lewis](https://github.com/Lewiscowles1986) colors are also handled properly
 - To use the Bun variant, simply use `bun` tag: `tgagor/gemini-cli:bun`
 
 #### Platform-specific Notes
@@ -70,6 +73,8 @@ docker run --rm -it \
     -v "$HOME/.gemini:/home/gemini/.gemini" \
     -e DEFAULT_UID=$(id -u) \
     -e DEFAULT_GID=$(id -g) \
+    -e TERM="${TERM:-xterm-256color}" \
+    -e COLORTERM="${COLORTERM:-truecolor}" \
     tgagor/gemini-cli [command]
 ```
 
