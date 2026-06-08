@@ -60,8 +60,8 @@ This setup:
 
 This repository provides two runtime variants:
 
-- **Node.js** (default): Available on `linux/amd64`, `linux/arm64`, and `linux/arm/v7`. Use standard tags like `latest`, `v0.45.1`.
-- **Bun**: Faster alternative available on `linux/amd64` and `linux/arm64` only. Use tags with `bun` suffix (e.g., `bun`, `v0.45.1-bun`).
+- **Node.js** (default): Available on `linux/amd64`, `linux/arm64`, and `linux/arm/v7`. Use standard tags like `latest`, `v0.45.2`.
+- **Bun**: Faster alternative available on `linux/amd64` and `linux/arm64` only. Use tags with `bun` suffix (e.g., `bun`, `v0.45.2-bun`).
 
 ### Basic Docker Usage
 
@@ -103,8 +103,8 @@ The following tags are available on [Docker Hub](https://hub.docker.com/r/tgagor
 
 *   [`latest`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Most recent stable version.
 *   [`alpine`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Latest with Alpine Linux base.
-*   [`v0.45.1`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Specific version.
-*   [`v0.45.1-alpine`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Specific version with Alpine base.
+*   [`v0.45.2`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Specific version.
+*   [`v0.45.2-alpine`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Specific version with Alpine base.
 *   [`v0.45`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Latest patch for a minor version.
 *   [`v0.45-alpine`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Latest patch with Alpine base.
 *   [`v0`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Latest minor release for a major version.
@@ -113,7 +113,7 @@ The following tags are available on [Docker Hub](https://hub.docker.com/r/tgagor
 ### Bun (⚠️ amd64 and arm64 only)
 
 *   [`bun`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Latest with Bun runtime.
-*   [`v0.45.1-bun`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Specific version with Bun.
+*   [`v0.45.2-bun`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Specific version with Bun.
 *   [`v0.45-bun`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Latest patch for a minor version with Bun.
 *   [`v0-bun`](https://hub.docker.com/r/tgagor/gemini-cli/tags): Latest minor with Bun.
 
