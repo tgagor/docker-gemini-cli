@@ -106,7 +106,7 @@ jobs:
 
       - name: Install TPL
         if: github.ref == 'refs/heads/main' && !contains(github.event.commits[0].message, 'auto-update README')
-        uses: zooplus/tpl@v0.13.6
+        uses: zooplus/tpl@v0.13.8
 
       - name: Update README
         if: github.ref == 'refs/heads/main' && !contains(github.event.commits[0].message, 'auto-update README')
