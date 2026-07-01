@@ -28,7 +28,7 @@ jobs:
     outputs:
       tag_version: ${{ steps.tag_version.outputs.new_tag }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Set up Docker
         uses: docker/setup-docker-action@v5
@@ -157,7 +157,7 @@ jobs:
       - build
     if: github.ref == 'refs/heads/main' || github.event_name == 'schedule'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Fetch image
         run: |
           echo ${{ secrets.HUB_ACCESS }} | docker login -u $GITHUB_ACTOR --password-stdin
